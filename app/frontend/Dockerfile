@@ -4,10 +4,11 @@ WORKDIR /app-frontend
 
 COPY package*.json /app-frontend/
 
-RUN npm install
+RUN npm install 
 
 COPY ./ /app-frontend/
 
-EXPOSE 3000
+EXPOSE 3000 
 
-CMD ["npm",  "start"]
+CMD ["npm", "start"]
+
