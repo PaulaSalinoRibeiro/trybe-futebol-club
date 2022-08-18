@@ -8,12 +8,12 @@ const loginRouter = express.Router();
 const loginService = new LoginService();
 const loginController = new LoginController(loginService);
 
-loginRouter.post('/login', (req, res, next) => loginController.login(req, res, next));
+loginRouter.post('/', (req, res, next) => loginController.login(req, res, next));
 
 loginRouter.use(tokenMiddleware);
 
 loginRouter.get(
-  '/login/validate',
+  '/validate',
   (req, res, next) => LoginController.loginValidate(req, res, next),
 );
 
