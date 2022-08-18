@@ -11,7 +11,7 @@ export default class LoginController {
   async login(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       const token = await this.loginService.login(req.body);
-      res.status(StatusCodes.OK).json({ token });
+      return res.status(StatusCodes.OK).json({ token });
     } catch (err) {
       next(err);
     }
