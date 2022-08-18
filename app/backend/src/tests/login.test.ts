@@ -7,7 +7,6 @@ import { app } from '../app';
 import User from '../database/models/user';
 import LoginService from '../services/loginService';
 import HandleError from '../utils/handleError';
-import JWT from '../utils/jwt';
 
 import { Response } from 'superagent';
 import { StatusCodes } from 'http-status-codes';
