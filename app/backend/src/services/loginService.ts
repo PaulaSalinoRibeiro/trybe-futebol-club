@@ -1,9 +1,9 @@
 import * as Joi from 'joi';
 import { StatusCodes } from 'http-status-codes';
-import User from '../database/models/user';
 import HandleError from '../utils/handleError';
 import Encrypty from '../utils/bcrypt';
 import JWT from '../utils/jwt';
+import User from '../database/models/user';
 
 import Login, { LoginData } from '../interfaces/ILogin';
 

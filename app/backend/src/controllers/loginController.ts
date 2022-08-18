@@ -16,4 +16,9 @@ export default class LoginController {
       next(err);
     }
   }
+
+  static async loginValidate(req: Request, res: Response, _next: NextFunction): Promise<Response> {
+    const data = req.body.user;
+    return res.status(StatusCodes.OK).json({ role: data.role });
+  }
 }
