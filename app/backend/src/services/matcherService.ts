@@ -18,7 +18,16 @@ export default class MatcherService {
     return matchers as unknown as IMatchers[];
   }
 
-  // async getByFilter(query: string): Promise<IMatchers | void> {
-
+  // async getByFilter(query: string): Promise<IMatchers[]> {
+  //   const matchers = await this.model.findAll({
+  //     where: {
+  //       inProgress: query,
+  //     },
+  //     include: [
+  //       { model: Team, as: 'teamHome', attributes: ['teamName'] },
+  //       { model: Team, as: 'teamAway', attributes: ['teamName'] },
+  //     ],
+  //   });
+  //   return matchers as unknown as IMatchers[];
   // }
 }
