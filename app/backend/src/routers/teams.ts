@@ -7,8 +7,8 @@ const teamController = new TeamController(teamService);
 
 const teamsRouter = express.Router();
 
-teamsRouter.get('/teams/:id', (req, res, next) => teamController.findById(req, res, next));
+teamsRouter.get('/:id', (req, res, next) => teamController.findById(req, res, next));
 
-teamsRouter.get('/teams', (req, res, next) => teamController.listAll(req, res, next));
+teamsRouter.get('/', (req, res, next) => teamController.listAll(req, res, next));
 
 export default teamsRouter;
