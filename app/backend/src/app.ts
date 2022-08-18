@@ -1,6 +1,8 @@
 import * as express from 'express';
 import * as cors from 'cors';
-import router from './routers';
+import loginRouter from './routers/login';
+import teamsRouter from './routers/teams';
+import matchersRouter from './routers/matchers';
 import errorMiddleware from './middlewares/errorMiddleware';
 
 class App {
@@ -27,7 +29,11 @@ class App {
     this.app.use(accessControl);
 
     this.app.use(cors());
-    this.app.use(router);
+
+    this.app.use('/matches', matchersRouter);
+    this.app.use('/teams', teamsRouter);
+    this.app.use('/login', loginRouter);
+
     this.app.use(errorMiddleware);
   }
 
