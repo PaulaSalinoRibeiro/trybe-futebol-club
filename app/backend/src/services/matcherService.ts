@@ -3,7 +3,7 @@ import Team from '../database/models/team';
 import Matches from '../database/models/matches';
 import HandleError from '../utils/handleError';
 
-import IMatchers, { MatchersCreate } from '../interfaces/IMatchers';
+import IMatchers, { GoalsMatchers, MatchersCreate } from '../interfaces/IMatchers';
 
 export default class MatcherService {
   constructor(private model = Matches) {
@@ -43,5 +43,9 @@ export default class MatcherService {
 
   async updateProgress(id: number): Promise<void> {
     await this.model.update({ inProgress: false }, { where: { id } });
+  }
+
+  async updateGoals(id: number, data: GoalsMatchers): Promise<void> {
+    await this.model.update({ ...data }, { where: { id } });
   }
 }
