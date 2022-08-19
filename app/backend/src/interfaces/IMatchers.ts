@@ -9,6 +9,17 @@ export default interface IMatchers {
   teamAway: { teamName: string };
 }
 
+export interface MatchersCreate {
+  id?: number;
+  homeTeam: number;
+  awayTeam: number;
+  homeTeamGoals: number;
+  awayTeamGoals: number;
+  inProgress?: boolean;
+}
+
 export interface Matchers {
   getAllMatchers(): Promise<IMatchers[]>
+  create(data: MatchersCreate): Promise< MatchersCreate | void>
+  updateProgress(id: number): Promise<void>
 }
