@@ -18,8 +18,14 @@ export interface MatchersCreate {
   inProgress?: boolean;
 }
 
+export interface GoalsMatchers {
+  homeTeamGoals: number;
+  awayTeamGoals: number;
+}
+
 export interface Matchers {
   getAllMatchers(): Promise<IMatchers[]>
   create(data: MatchersCreate): Promise< MatchersCreate | void>
   updateProgress(id: number): Promise<void>
+  updateGoals(id: number, data: GoalsMatchers): Promise<void>
 }
