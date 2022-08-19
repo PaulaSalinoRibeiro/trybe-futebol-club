@@ -7,6 +7,8 @@ import { app } from '../app';
 import User from '../database/models/user';
 import LoginService from '../services/loginService';
 import HandleError from '../utils/handleError';
+import JWT from '../utils/jwt';
+import Encrypty from '../utils/bcrypt';
 
 import { Response } from 'superagent';
 import { StatusCodes } from 'http-status-codes';
@@ -84,7 +86,9 @@ describe('Teste Login', () => {
   });
 
   it('Deve retornar status 200 com um token', async () => {
-    sinon.stub(User, 'findOne').resolves(user as User)
+    sinon.stub(User, 'findOne').resolves(user as User);
+    sinon.stub(Encrypty, 'checkPassword').returns();
+    sinon.stub(JWT, 'createToken').returns('token');
 
     const response = await chai.request(app)
     .post('/login').send(registryUser);
