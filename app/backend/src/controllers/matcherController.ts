@@ -15,4 +15,22 @@ export default class MatcherController {
       next(err);
     }
   }
+
+  async create(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+      const newMatcher = await this.matcherService.create(req.body);
+      return res.status(StatusCodes.CREATED).json(newMatcher);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async updateProgress(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+      await this.matcherService.updateProgress(Number(req.params.id));
+      return res.status(StatusCodes.OK).json({ message: 'Finished' });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
