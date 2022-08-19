@@ -33,4 +33,13 @@ export default class MatcherController {
       next(err);
     }
   }
+
+  async updateGoals(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+      await this.matcherService.updateGoals(Number(req.params.id), req.body);
+      return res.status(StatusCodes.OK).json({ message: 'Updated!' });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
