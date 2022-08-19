@@ -14,6 +14,8 @@ matchersRouter.patch(
   (req, res, next) => matcherController.updateProgress(req, res, next),
 );
 
+matchersRouter.patch('/:id', (req, res, next) => matcherController.updateGoals(req, res, next));
+
 matchersRouter.post(
   '/',
   tokenMiddleware,
