@@ -13,7 +13,7 @@ export interface ILeaderBoard {
   efficiency: number,
 }
 
-export interface MatchesTeam {
+export interface MatchesTeamHome {
   id?: number,
   teamName: string,
   homeTeam: MatchersCreate[]
@@ -25,7 +25,15 @@ export interface MatchesTeamAway {
   awayTeam: MatchersCreate[]
 }
 
+export interface MatchesTeam {
+  id?: number,
+  teamName: string,
+  homeTeam: MatchersCreate[],
+  awayTeam: MatchersCreate[]
+}
+
 export default interface LeaderBoard {
   getFinishedMatchersHome(): Promise<ILeaderBoard[]>
   getFinishedmatchersAway(): Promise<ILeaderBoard[]>
+  getFinishedMatchers(): Promise<ILeaderBoard[]>
 }
