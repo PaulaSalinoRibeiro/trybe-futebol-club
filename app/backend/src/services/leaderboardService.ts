@@ -2,14 +2,14 @@ import Matches from '../database/models/matches';
 import Team from '../database/models/team';
 
 import { MatchersCreate } from '../interfaces/IMatchers';
-import { MatchesTeam, ILeaderBoard } from '../interfaces/ILeaderBoard';
+import { MatchesTeam, ILeaderBoard, MatchesTeamAway } from '../interfaces/ILeaderBoard';
 
 export default class LeaderBoardService {
   constructor(private model = Team) {
     this.model = model;
   }
 
-  static resultsGoals(matchers: MatchersCreate[]): number[] {
+  static resultsGoalsHome(matchers: MatchersCreate[]): number[] {
     const goalsFavorHome = matchers
       .reduce((acc, curr: MatchersCreate) => acc + curr.homeTeamGoals, 0);
 
@@ -19,7 +19,17 @@ export default class LeaderBoardService {
     return [goalsFavorHome, goalsOwnHome];
   }
 
-  static resultOfMatchers(matchers: MatchersCreate[]): number[] {
+  static resultsGoalsAway(matchers: MatchersCreate[]): number[] {
+    const goalsFavorAway = matchers
+      .reduce((acc, curr: MatchersCreate) => acc + curr.awayTeamGoals, 0);
+
+    const goalsOwnAway = matchers
+      .reduce((acc, curr: MatchersCreate) => acc + curr.homeTeamGoals, 0);
+
+    return [goalsFavorAway, goalsOwnAway];
+  }
+
+  static resultOfMatchersHome(matchers: MatchersCreate[]): number[] {
     let victories = 0;
     let draws = 0;
     let losses = 0;
@@ -37,13 +47,30 @@ export default class LeaderBoardService {
     return [victories, draws, losses, totalPoints];
   }
 
-  static formatted({ teamName, homeTeam }: MatchesTeam) {
+  static resultOfMatchersAway(matchers: MatchersCreate[]): number[] {
+    let victories = 0;
+    let draws = 0;
+    let losses = 0;
+
+    matchers.forEach(({ homeTeamGoals, awayTeamGoals }) => {
+      if (homeTeamGoals < awayTeamGoals) victories += 1;
+
+      if (homeTeamGoals === awayTeamGoals) draws += 1;
+
+      if (homeTeamGoals > awayTeamGoals) losses += 1;
+    });
+
+    const totalPoints = 3 * victories + draws;
+
+    return [victories, draws, losses, totalPoints];
+  }
+
+  static formattedHome({ teamName, homeTeam }: MatchesTeam) {
     const [
       victoriesHome, drawsHome, lossesHome, pointsHome,
-    ] = LeaderBoardService.resultOfMatchers(homeTeam);
+    ] = LeaderBoardService.resultOfMatchersHome(homeTeam);
 
-    const [goalsFavorHome, goalsOwnHome] = LeaderBoardService.resultsGoals(homeTeam);
-
+    const [goalsFavorHome, goalsOwnHome] = LeaderBoardService.resultsGoalsHome(homeTeam);
     return {
       name: teamName,
       totalPoints: pointsHome,
@@ -55,6 +82,26 @@ export default class LeaderBoardService {
       goalsOwn: goalsOwnHome,
       goalsBalance: (goalsFavorHome - goalsOwnHome),
       efficiency: Number(((pointsHome / (homeTeam.length * 3)) * 100).toFixed(2)),
+    };
+  }
+
+  static formattedAway({ teamName, awayTeam }: MatchesTeamAway) {
+    const [
+      victoriesHome, drawsHome, lossesHome, pointsHome,
+    ] = LeaderBoardService.resultOfMatchersAway(awayTeam);
+
+    const [goalsFavorAway, goalsOwnAway] = LeaderBoardService.resultsGoalsAway(awayTeam);
+    return {
+      name: teamName,
+      totalPoints: pointsHome,
+      totalGames: awayTeam.length,
+      totalVictories: victoriesHome,
+      totalDraws: drawsHome,
+      totalLosses: lossesHome,
+      goalsFavor: goalsFavorAway,
+      goalsOwn: goalsOwnAway,
+      goalsBalance: (goalsFavorAway - goalsOwnAway),
+      efficiency: Number(((pointsHome / (awayTeam.length * 3)) * 100).toFixed(2)),
     };
   }
 
@@ -74,15 +121,31 @@ export default class LeaderBoardService {
     return 0;
   }
 
-  async getFinishedMatchers() {
+  async getFinishedMatchersHome(): Promise<ILeaderBoard[]> {
     const matchers = await this.model.findAll({
       include: [
         { model: Matches, as: 'homeTeam', where: { inProgress: 0 } },
       ],
     });
 
-    const leaderBoardHome = matchers.map(LeaderBoardService.formatted as any);
+    const fineshedMatches = matchers as unknown as MatchesTeam[];
 
-    return leaderBoardHome.sort(LeaderBoardService.orderMatchers as any);
+    const leaderBoardHome = fineshedMatches.map(LeaderBoardService.formattedHome);
+
+    return leaderBoardHome.sort(LeaderBoardService.orderMatchers);
+  }
+
+  async getFinishedmatchersAway(): Promise<ILeaderBoard[]> {
+    const matchers = await this.model.findAll({
+      include: [
+        { model: Matches, as: 'awayTeam', where: { inProgress: 0 } },
+      ],
+    });
+
+    const fineshedMatches = matchers as unknown as MatchesTeamAway[];
+
+    const leaderBoardHome = fineshedMatches.map(LeaderBoardService.formattedAway);
+
+    return leaderBoardHome.sort(LeaderBoardService.orderMatchers);
   }
 }
