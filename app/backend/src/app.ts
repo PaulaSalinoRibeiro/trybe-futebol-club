@@ -3,6 +3,7 @@ import * as cors from 'cors';
 import loginRouter from './routers/login';
 import teamsRouter from './routers/teams';
 import matchersRouter from './routers/matchers';
+import leaderRouter from './routers/learder';
 import errorMiddleware from './middlewares/errorMiddleware';
 
 class App {
@@ -30,6 +31,7 @@ class App {
 
     this.app.use(cors());
 
+    this.app.use('/leaderboard/', leaderRouter);
     this.app.use('/matches', matchersRouter);
     this.app.use('/teams', teamsRouter);
     this.app.use('/login', loginRouter);
