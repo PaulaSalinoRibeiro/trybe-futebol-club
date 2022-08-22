@@ -14,11 +14,18 @@ export interface ILeaderBoard {
 }
 
 export interface MatchesTeam {
-  id: number,
+  id?: number,
   teamName: string,
   homeTeam: MatchersCreate[]
 }
 
+export interface MatchesTeamAway {
+  id?: number,
+  teamName: string,
+  awayTeam: MatchersCreate[]
+}
+
 export default interface LeaderBoard {
-  getFinishedMatchers(): Promise<any>
+  getFinishedMatchersHome(): Promise<ILeaderBoard[]>
+  getFinishedmatchersAway(): Promise<ILeaderBoard[]>
 }
