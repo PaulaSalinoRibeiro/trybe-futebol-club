@@ -33,4 +33,17 @@ export default class LeaderBoardController {
       next(err);
     }
   }
+
+  async getFinishedMatchers(
+    _req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
+    try {
+      const leaderBoard = await this.leaderBoardService.getFinishedMatchers();
+      return res.status(StatusCodes.OK).json(leaderBoard);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
