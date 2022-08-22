@@ -8,13 +8,26 @@ export default class LeaderBoardController {
     this.leaderBoardService = leaderBoardService;
   }
 
-  async getFinishedMatchers(
+  async getFinishedMatchersHome(
     _req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
     try {
-      const leaderBoard = await this.leaderBoardService.getFinishedMatchers();
+      const leaderBoard = await this.leaderBoardService.getFinishedMatchersHome();
+      return res.status(StatusCodes.OK).json(leaderBoard);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getFinishedMatchersAway(
+    _req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
+    try {
+      const leaderBoard = await this.leaderBoardService.getFinishedmatchersAway();
       return res.status(StatusCodes.OK).json(leaderBoard);
     } catch (err) {
       next(err);
