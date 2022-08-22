@@ -17,4 +17,9 @@ leaderRouter.get(
   (req, res, next) => leaderController.getFinishedMatchersAway(req, res, next),
 );
 
+leaderRouter.get(
+  '/',
+  (req, res, next) => leaderController.getFinishedMatchers(req, res, next),
+);
+
 export default leaderRouter;
